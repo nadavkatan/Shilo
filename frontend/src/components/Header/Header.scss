@@ -1,0 +1,22 @@
+body{
+    margin: 0;
+}
+
+header{
+    display: flex;
+    justify-content: space-around;
+    // background-color: #F9B8BE;
+    background-color: #1DB9C3;
+    padding: 1em;
+    box-shadow: 0 0 20px gray;
+
+    .logo-container{
+        display: flex;
+
+        .shilo-logo{
+            padding-left: 0.5em;
+        }
+        
+    }
+}
+

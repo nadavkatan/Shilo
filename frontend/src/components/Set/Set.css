@@ -1,0 +1,74 @@
+.carousel-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.flashcard {
+  text-align: center;
+  height: 50em !important;
+  width: 100% !important;
+}
+
+.carousel {
+  height: 451px !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 auto;
+  width: 50% !important;
+}
+
+.css-1f8sh1y {
+  position: relative !important;
+  width: 97% !important;
+  height: 300px !important;
+  background-color: white;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 7px grey;
+          box-shadow: 0px 0px 7px grey;
+}
+
+.css-1abc02a {
+  position: absolute;
+  height: 100%;
+  background-color: transparent;
+  z-index: 1;
+  top: 0;
+  right: 20px !important;
+}
+
+.css-hn784z {
+  position: absolute;
+  height: 100%;
+  background-color: transparent;
+  z-index: 1;
+  top: 0;
+  left: 20px !important;
+}
+
+.card-side {
+  height: 15em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}

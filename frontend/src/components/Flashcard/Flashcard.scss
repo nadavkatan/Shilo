@@ -1,0 +1,24 @@
+.edit-input{
+    padding: 2em;
+}
+
+.text-area{
+    &:focus{
+        outline: none
+    }
+}
+
+.img-icon-container{
+    border: 2px dashed lightgray;
+    padding: 1em 2.5em;
+    border-radius: 10px;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    cursor: pointer;
+    &:hover .img-icon{
+         color:#FFCD1F; 
+        }
+}
+

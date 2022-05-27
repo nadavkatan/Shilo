@@ -1,0 +1,59 @@
+.carousel-container{
+    display:flex;
+    justify-content: center;
+}
+
+.flashcard{
+    text-align:center;
+    // min-height: 10em;
+    height: 50em!important;
+    width: 100%!important;
+}
+
+.carousel{
+    // min-height: 50em;
+    // height: 20em;
+    // width: 400px;
+    // height: 700px;
+    height: 451px!important;
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 50%!important;
+}
+
+.css-1f8sh1y{
+position: relative !important;
+width: 97% !important;
+height: 300px!important;
+background-color: white;
+border-radius: 10px;
+box-shadow: 0px 0px 7px grey;
+}
+
+.css-1abc02a {
+    position: absolute;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    top: 0;
+    right: 20px!important;
+}
+
+.css-hn784z {
+    position: absolute;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1;
+    top: 0;
+    left: 20px!important;
+}
+
+.card-side{
+    height: 15em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

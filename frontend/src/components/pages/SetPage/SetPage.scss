@@ -1,0 +1,24 @@
+.heading-wrapper{
+    display: flex;
+    justify-content:center;
+
+    .heading-container{
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        height: 100%;
+
+        .set-page-heading{
+            color: #325288;
+            font-size: 5em !important;
+        }
+        .edit-icon{
+            margin-left: -1em;
+            margin-top: 3em;
+            background-color: #FFC900;
+            color: white;
+        }
+    }
+}
+
+

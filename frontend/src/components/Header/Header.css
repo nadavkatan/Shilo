@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  background-color: #1DB9C3;
+  padding: 1em;
+  -webkit-box-shadow: 0 0 20px gray;
+          box-shadow: 0 0 20px gray;
+}
+
+header .logo-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+header .logo-container .shilo-logo {
+  padding-left: 0.5em;
+}
