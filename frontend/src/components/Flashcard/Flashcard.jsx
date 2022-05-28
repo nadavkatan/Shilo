@@ -31,7 +31,8 @@ const Flashcard = ({
   cardId,
   setName,
   defaultSet, 
-  setDefaultSet
+  setDefaultSet,
+  validateCard
 }) => {
   const [currentTerm, setCurrentTerm] = useState(term);
   const [currentDefinition, setcurrentDefinition] = useState(definition);
@@ -42,8 +43,9 @@ const Flashcard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [cards, setCards] = useState([]);
+  const [valid, setValid] = useState(false);
 
-  const {addOrUpdateFolder,addNewSet, currentUser, removeCardFromSet,updateSet, checkIfCardsLeft, fetchCards, editCard, addNewCard} = useContext(AppContext);
+  const {addOrUpdateFolder,addNewSet, currentUser, removeCardFromSet,updateSet, checkIfCardsLeft, editCard, fetchCards, addNewCard} = useContext(AppContext);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
@@ -69,10 +71,10 @@ const Flashcard = ({
       //Check if the cards exists in the set, if they don't, update create new card in the db and update cards array in the set in the db
       if(!cards.some(card=> card.id === cardId.toString())){
         console.log('card not in set')
-        addNewCard(card);
-        updateSet(setName, currentFolder, card);
-        updateCardInDefaultSet(cardId, currentTerm, currentDefinition, defaultSet, setDefaultSet)
-        fetchCards(setName, setCards);
+          addNewCard(card);
+          updateSet(setName, currentFolder, card);
+          updateCardInDefaultSet(cardId, currentTerm, currentDefinition, defaultSet, setDefaultSet)
+          fetchCards(setName, setCards);
       }else{
         console.log('card already in set');
         editCard(cardId, currentTerm, currentDefinition)
@@ -81,11 +83,17 @@ const Flashcard = ({
     }else{
       console.log("set does not exist in db");
       //check if folder exists
+      if(validateCard(card, currentFolder)){
+        console.log("valid")
+        setValid(true)
         addOrUpdateFolder(currentFolder, setName);
         addNewCard(card);
         addNewSet(card, currentFolder, setId);
         updateCardInDefaultSet(cardId, currentTerm, currentDefinition)
         fetchCards(setName, setCards);
+      }else{
+        setValid(false);
+      }
     }
 
     setDoneEditing(true);
@@ -156,7 +164,7 @@ const Flashcard = ({
           height: "12em",
           display: "flex",
           alignItems: "center",
-          backgroundColor: doneEditing ? "lightgrey" : "white",
+          backgroundColor: doneEditing && valid ? "lightgrey" : "white",
         }}
         elevation={3}
       >

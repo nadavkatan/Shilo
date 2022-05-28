@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Flashcard from "../../Flashcard/Flashcard";
 import AddIcon from "@mui/icons-material/Add";
 import {AppContext} from '../../Context/Context'
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import axios from 'axios';
 
@@ -23,6 +25,22 @@ const CreatePage = () => {
       id: Math.floor(Math.random()*1000000000)
     }],
   });
+
+  const validateCard = (card, currentFolder)=>{
+    if(card.SetName && currentFolder){
+    console.log("successful validation")
+    console.log("set" , card.setName, "currentFolder", currentFolder)
+    return true
+    }
+    if(!card.setName){
+      toast.error("Card must be assigned to set")
+      return false
+    }
+    if(!currentFolder){
+     toast.error("Card must be assigned to folder")
+     return false
+    }
+  }
 
   // controll the folder and set names input values
   const handleChange = (e) => {
@@ -92,6 +110,7 @@ const CreatePage = () => {
       <Typography variant="h2" style={{ margin: "0.5em 0 0.5em 0.3em" }}>
         Create a new set
       </Typography>
+      <ToastContainer />
       <Grid container spacing={2} style={{ marginLeft: "0.5em" }}>
         <Grid item md={2} >
           <Input
@@ -128,6 +147,7 @@ const CreatePage = () => {
               setName={defaultSet.setName}
               cardId={card.id}
               key={card.id}
+              validateCard={validateCard}
             />
           </Grid>)
           })

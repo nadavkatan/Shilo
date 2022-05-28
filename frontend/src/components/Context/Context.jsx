@@ -34,6 +34,7 @@ const Context = ({children}) => {
           cb(cards.data);
          },
           editCard: async(cardId, currentTerm, currentDefinition)=>{
+            console.log("current term: " + currentTerm, "current definition: " + currentDefinition)
           const updatedCard = await axios.put('http://localhost:8000/cards',{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
           console.log(updatedCard);
         },
@@ -149,15 +150,11 @@ const Context = ({children}) => {
           handleRegister: async(formData, cb)=>{
             const attempt = await register(formData, cb);
             if(attempt === "success") { 
-              console.log("success");
-              // setIsAuth(true);
             navigate("/");
             }
           },
           handleLogin: async(credentials)=>{
-            // const response = await login(credentials);
             const {isAuth, message} = await login(credentials);
-            // setIsAuth(response);
             setAuthMessage(message);
             setIsAuth(isAuth);
             if(message !=="No user with that username" || message !== "Incorrect password"){
@@ -166,10 +163,7 @@ const Context = ({children}) => {
             }
           },
           handleLogout: async()=>{
-            console.log("test")
            const res = await logout();
-           console.log(res)
-            // setIsAuth(false);
             setIsAuth(res);
             navigate("/login");
           }
@@ -177,24 +171,14 @@ const Context = ({children}) => {
 
     const checkAuthentication=  async()=>{
       const response = await checkAuth();
-      console.log(response);
       setCurrentUser(response.user);
       setIsAuth(response.isAuth);
     }
 
     useEffect(()=>{
-      console.log("checking authentication...");
       checkAuthentication()
       setCurrentLocation(location);
     },[])
-
-    useEffect(()=>{
-      console.log(currentUser)
-    },[currentUser])
-
-    useEffect(()=>{
-      console.log(authMessage);
-    },[authMessage])
 
   return (
     <AppContext.Provider value={value}>

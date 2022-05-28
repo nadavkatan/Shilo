@@ -39,7 +39,7 @@ const findOneCard = async(cardId)=>{
 
 const updateCard = async(id, update)=>{
     try{
-        const updatedCard = await Card.findOneAndUpdate(id, update);
+        const updatedCard = await Card.findOneAndUpdate({id: id}, update, {new: true});
         return updatedCard;
     }catch(err){
         console.log(err);
