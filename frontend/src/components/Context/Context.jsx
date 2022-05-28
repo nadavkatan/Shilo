@@ -13,7 +13,6 @@ const Context = ({children}) => {
   const [currentUser, setCurrentUser] = useState("");
   const [currentLocation, setCurrentLocation] = useState("");
   const [authMessage, setAuthMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   
 
   const navigate = useNavigate()
@@ -21,7 +20,6 @@ const Context = ({children}) => {
 
     const value= {
          isAuth,
-        //  register,
          setIsAuth,
          authMessage,
          currentUser,
@@ -116,7 +114,6 @@ const Context = ({children}) => {
               value.addNewFolder( currentFolder, setName, currentUser)
             }else{
               console.log('folder already in db')
-              //updateFolder
               value.updateFolder(currentFolder, currentFolder, setName);
             }
           },
