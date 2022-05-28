@@ -41,94 +41,54 @@ const Flashcard = ({
   const [showImgBox, setShowImgBox] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [mongoCardId, setMongoCardId] = useState("");
   const [cards, setCards] = useState([]);
 
-  const {addNewFolder,getFolderByName, updateFolder, currentUser, removeCardFromSet, checkIfCardsLeft} = useContext(AppContext);
+  const {addOrUpdateFolder,addNewSet, currentUser, removeCardFromSet,updateSet, checkIfCardsLeft, fetchCards, editCard, addNewCard} = useContext(AppContext);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
-
-  const fetchCards = async(setName)=>{
-     let cards = await axios.post('http://localhost:8000/cards/in-set', {setName:setName});
-     setCards(cards.data);
-    }
-
-    const editCard = async(cardId)=>{
-      const updatedCard = await axios.put('http://localhost:8000/cards',{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
-      console.log(updatedCard);
-    }
-  
-  const addOrUpdateFolder = async()=>{
-    let existingFolder = await getFolderByName(currentFolder);
-    console.log(existingFolder);
-    if(!existingFolder.data){
-      console.log("folder is not in db")
-      addNewFolder( currentFolder, setName, currentUser)
-    }else{
-      console.log('folder already in db')
-      //updateFolder
-      updateFolder(currentFolder, currentFolder, setName);
-    }
-  }
-
   const handleUpdate = async() => {
     //Get all the sets, and then check if the current set exists in the database
-    // let sets = await axios.get('http://localhost:8000/set');
     let sets = await axios.post('http://localhost:8000/set/all', {username: currentUser});
     console.log(sets);
     let existing = sets.data.filter(set=> set.set_name === setName && set.inFolder === currentFolder);
     console.log(existing)
+
+    let card ={
+      set: setName,
+      term: currentTerm,
+      definition: currentDefinition,
+      id: cardId.toString(),
+      defImgSrc: curentImgSrc,
+    }
     
     // If the set exists in db
     if(existing.length){
       console.log('set exists in database');
-      //updateFolder
 
       //Check if the cards exists in the set, if they don't, update create new card in the db and update cards array in the set in the db
       if(!cards.some(card=> card.id === cardId.toString())){
         console.log('card not in set')
-
-        let card ={
-          set: setName,
-          term: currentTerm,
-          definition: currentDefinition,
-          id: cardId.toString(),
-          defImgSrc: curentImgSrc,
-        }
-
-        await axios.post("http://localhost:8000/create", card);
-        await axios.put("http://localhost:8000/set", {user: currentUser, name: setName, folder:currentFolder,  update: card.id});
+        addNewCard(card);
+        updateSet(setName, currentFolder, card);
         updateCardInDefaultSet(cardId, currentTerm, currentDefinition, defaultSet, setDefaultSet)
-        fetchCards(setName);
+        fetchCards(setName, setCards);
       }else{
         console.log('card already in set');
-        editCard(cardId)
+        editCard(cardId, currentTerm, currentDefinition)
       }
 
     }else{
       console.log("set does not exist in db");
       //check if folder exists
-      addOrUpdateFolder()
-      let newCard ={
-        set: setName,
-        term: currentTerm,
-        definition: currentDefinition,
-        id: cardId.toString(),
-        defImgSrc: curentImgSrc,
-      }
-       const mongoCard = await axios.post("http://localhost:8000/create", newCard);
-       setMongoCardId(mongoCard.data.card._id)
-     const newSet= await axios.post("http://localhost:8000/set", {set_name:newCard.set, inFolder: currentFolder, setId:setId, user: currentUser, cards:[newCard.id]});
-    //  const newSet= await axios.post("http://localhost:8000/set", {set_name:newCard.set, inFolder: currentFolder, setId:setId, cards:[newCard.id]});
-     console.log(newSet);
+        addOrUpdateFolder(currentFolder, setName);
+        addNewCard(card);
+        addNewSet(card, currentFolder, setId);
         updateCardInDefaultSet(cardId, currentTerm, currentDefinition)
-        fetchCards(setName);
+        fetchCards(setName, setCards);
     }
 
-    // Edit mode is set to false
     setDoneEditing(true);
-    // Images box is set to false, which will unmount the ImageBox element
     setShowImgBox(false);
   };
 
@@ -172,7 +132,7 @@ const Flashcard = ({
   };
 
   useEffect(() => {
-    fetchCards(setName);
+    fetchCards(setName, setCards);
   },[])
 
   useEffect(() => {

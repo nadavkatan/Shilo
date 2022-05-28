@@ -12,7 +12,8 @@ const Context = ({children}) => {
   const [isAuth, setIsAuth] = useState(undefined);
   const [currentUser, setCurrentUser] = useState("");
   const [currentLocation, setCurrentLocation] = useState("");
-  const [authMessage, setAuthMessage] = useState("")
+  const [authMessage, setAuthMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   
 
   const navigate = useNavigate()
@@ -27,6 +28,17 @@ const Context = ({children}) => {
          currentLocation,
          existingSets,
          existingFolders,
+         addNewCard: async(card)=>{
+          await axios.post("http://localhost:8000/create", card);
+         },
+          fetchCards: async(setName, cb)=>{
+          let cards = await axios.post('http://localhost:8000/cards/in-set', {setName:setName});
+          cb(cards.data);
+         },
+          editCard: async(cardId, currentTerm, currentDefinition)=>{
+          const updatedCard = await axios.put('http://localhost:8000/cards',{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
+          console.log(updatedCard);
+        },
          updateCardInDefaultSet: (cardId, term, definition, defaultSet, setDefaultSet)=>{
             setDefaultSet((prev) => {
               return {
@@ -44,11 +56,18 @@ const Context = ({children}) => {
               };
             });
           },
+          addNewSet: async(card, currentFolder, setId)=>{
+            const newSet= await axios.post("http://localhost:8000/set", {set_name:card.set, inFolder: currentFolder, setId:setId, user: currentUser, cards:[card.id]});
+            console.log(newSet);
+          },
            fetchSets: async()=>{
             await axios.post('http://localhost:8000/set/all', {username: currentUser})
             .then(res=>{
               setExistingSets(res.data)
             })
+          },
+          updateSet: async(setName,currentFolder,card )=>{
+            await axios.put("http://localhost:8000/set", {user: currentUser, name: setName, folder:currentFolder,  update: card.id});
           },
           removeCardFromSet: async(setName, folder, cardId)=>{
             await axios.put('http://localhost:8000/set/remove-card', {username: currentUser, name: setName, folder: folder, update: cardId})
@@ -89,6 +108,18 @@ const Context = ({children}) => {
             const newFolder = await axios.post('http://localhost:8000/folders',{"folder_name": folder, "user": username ,"sets": [set]});
             return newFolder
           }, 
+           addOrUpdateFolder: async(currentFolder, setName)=>{
+            let existingFolder = await value.getFolderByName(currentFolder);
+            console.log(existingFolder);
+            if(!existingFolder.data){
+              console.log("folder is not in db")
+              value.addNewFolder( currentFolder, setName, currentUser)
+            }else{
+              console.log('folder already in db')
+              //updateFolder
+              value.updateFolder(currentFolder, currentFolder, setName);
+            }
+          },
           getAllFolders: async()=>{
             const folders = await axios.post('http://localhost:8000/folders/all', {username: currentUser})
             .then(res=>{
