@@ -15,7 +15,8 @@ const EditPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const{deleteSet, removeSetFromFolder, getFolderByName, deleteFolder} = useContext(AppContext);
+  const{ fetchCards} = useContext(AppContext);
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   
   const [setName, setSetName] = useState("");
   const [currentSet, setCurrentSet] = useState();
@@ -29,16 +30,10 @@ const EditPage = () => {
 
     // get the name of the set form the url params
   const getSet = async()=>{
-    const set = await axios.get(`http://localhost:8000/set/${id}`);
+    const set = await axios.get(`${BASE_URL}/set/${id}`);
     console.log(set)
       setCurrentSet(set.data)
       setSetName(set.data.set_name)
-  }
-
-  const fetchCards = async(setName)=>{
-   let cards = await axios.post('http://localhost:8000/cards/in-set', {setName:setName});
-   console.log(cards);
-   setCardsInSet(cards.data);
   }
 
   const updateCardInDefaultSet = (cardId, term, definition)=>{
@@ -97,7 +92,7 @@ const EditPage = () => {
 
   useEffect(()=>{
     if(setName){
-      fetchCards(setName);
+      fetchCards(setName, setCardsInSet);
       setDefaultSet((prev)=>{
         return{
           ...prev, 
@@ -140,6 +135,7 @@ const EditPage = () => {
               currentFolder={defaultSet.inFolder}
               setName={defaultSet.setName}
               cardId={card.id}
+              initialValueForValid={true}
             />
           );
         })}

@@ -14,6 +14,7 @@ const Context = ({children}) => {
   const [currentLocation, setCurrentLocation] = useState("");
   const [authMessage, setAuthMessage] = useState("");
   
+  const BASE_URL = process.env.REACT_APP_BASE_URL
 
   const navigate = useNavigate()
   const location = useLocation();
@@ -27,15 +28,14 @@ const Context = ({children}) => {
          existingSets,
          existingFolders,
          addNewCard: async(card)=>{
-          await axios.post("http://localhost:8000/create", card);
+          await axios.post(`${BASE_URL}/create`, card);
          },
           fetchCards: async(setName, cb)=>{
-          let cards = await axios.post('http://localhost:8000/cards/in-set', {setName:setName});
+          let cards = await axios.post(`${BASE_URL}/cards/in-set`, {setName:setName});
           cb(cards.data);
          },
           editCard: async(cardId, currentTerm, currentDefinition)=>{
-            console.log("current term: " + currentTerm, "current definition: " + currentDefinition)
-          const updatedCard = await axios.put('http://localhost:8000/cards',{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
+          const updatedCard = await axios.put(`${BASE_URL}/cards`,{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
           console.log(updatedCard);
         },
          updateCardInDefaultSet: (cardId, term, definition, defaultSet, setDefaultSet)=>{
@@ -56,35 +56,40 @@ const Context = ({children}) => {
             });
           },
           addNewSet: async(card, currentFolder, setId)=>{
-            const newSet= await axios.post("http://localhost:8000/set", {set_name:card.set, inFolder: currentFolder, setId:setId, user: currentUser, cards:[card.id]});
+            const newSet= await axios.post(`${BASE_URL}/set`, {set_name:card.set, inFolder: currentFolder, setId:setId, user: currentUser, cards:[card.id]});
             console.log(newSet);
           },
            fetchSets: async()=>{
-            await axios.post('http://localhost:8000/set/all', {username: currentUser})
+            await axios.post(`${BASE_URL}/set/all`, {username: currentUser})
             .then(res=>{
               setExistingSets(res.data)
             })
           },
+           getSet: async(id,cb)=>{
+            const set = await axios.get(`${BASE_URL}/set/${id}`);
+            console.log(set)
+            cb(set.data.set_name)
+          },
           updateSet: async(setName,currentFolder,card )=>{
-            await axios.put("http://localhost:8000/set", {user: currentUser, name: setName, folder:currentFolder,  update: card.id});
+            await axios.put(`${BASE_URL}/set`, {user: currentUser, name: setName, folder:currentFolder,  update: card.id});
           },
           removeCardFromSet: async(setName, folder, cardId)=>{
-            await axios.put('http://localhost:8000/set/remove-card', {username: currentUser, name: setName, folder: folder, update: cardId})
+            await axios.put(`${BASE_URL}/set/remove-card`, {username: currentUser, name: setName, folder: folder, update: cardId})
           },
           deleteSet: async(id)=>{
-            await axios.delete('http://localhost:8000/set', {
+            await axios.delete(`${BASE_URL}/set`, {
               data: {
                 id: id
               }
             })
           },
           checkIfCardsLeft: async(setName, folder)=>{
-           const set = await axios.post('http://localhost:8000/set/one', { name: setName, folder: folder, username: currentUser})
+           const set = await axios.post(`${BASE_URL}/set/one`, { name: setName, folder: folder, username: currentUser})
            console.log(set)
            console.log(set.data[0]._id);
            if(!set.data[0].cards.length){
               console.log("no cards left in set")
-            await axios.delete('http://localhost:8000/set', {
+            await axios.delete(`${BASE_URL}/set`, {
               data: {
                 id: set.data[0].setId
               }
@@ -93,10 +98,10 @@ const Context = ({children}) => {
            }
           },
           removeSetFromFolder: async(folder, set)=>{
-            await axios.put('http://localhost:8000/folders/remove-set', {username: currentUser, folder: folder, update: set})
+            await axios.put(`${BASE_URL}/folders/remove-set`, {username: currentUser, folder: folder, update: set})
           },
           deleteFolder: async(folder)=>{
-            await axios.delete('http://localhost:8000/folders',{
+            await axios.delete(`${BASE_URL}/folders`,{
               data:{
                 username: currentUser,
                 folder: folder
@@ -104,7 +109,7 @@ const Context = ({children}) => {
             })
           },
           addNewFolder: async(folder, set, username)=>{
-            const newFolder = await axios.post('http://localhost:8000/folders',{"folder_name": folder, "user": username ,"sets": [set]});
+            const newFolder = await axios.post(`${BASE_URL}/folders`,{"folder_name": folder, "user": username ,"sets": [set]});
             return newFolder
           }, 
            addOrUpdateFolder: async(currentFolder, setName)=>{
@@ -119,7 +124,7 @@ const Context = ({children}) => {
             }
           },
           getAllFolders: async()=>{
-            const folders = await axios.post('http://localhost:8000/folders/all', {username: currentUser})
+            const folders = await axios.post(`${BASE_URL}/folders/all`, {username: currentUser})
             .then(res=>{
              const filtered = res.data.filter(folder=>{
                 if(folder.sets.length){
@@ -132,8 +137,12 @@ const Context = ({children}) => {
             })
           },
           getFolderByName: async(folderName)=>{
-            const folder = await axios.post('http://localhost:8000/folders/one', {"folder_name": folderName});
+            const folder = await axios.post(`${BASE_URL}/folders/one`, {"folder_name": folderName});
             return folder;
+          },
+           getFolderById: async(folderId, cb)=>{
+            const folder = await axios.get(`${BASE_URL}/folders/${folderId}`);
+            cb(folder.data)
           },
           updateFolder: async(oldName, newName, newSet)=>{
             const update = {
@@ -143,7 +152,7 @@ const Context = ({children}) => {
                     "set": newSet
                   }
             }
-            const updateFolder = await axios.put('http://localhost:8000/folders', update);
+            const updateFolder = await axios.put(`${BASE_URL}/folders`, update);
 
             return updateFolder
           },

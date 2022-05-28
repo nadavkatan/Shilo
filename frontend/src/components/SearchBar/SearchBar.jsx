@@ -7,7 +7,7 @@ import {AppContext} from '../Context/Context';
 
 export default function Searchbar() {
 
-  const {existingSets, fetchSets} = useContext(AppContext);
+  const {existingSets} = useContext(AppContext);
   const [options, setOptions] = useState([]);
 
     const navigate = useNavigate();

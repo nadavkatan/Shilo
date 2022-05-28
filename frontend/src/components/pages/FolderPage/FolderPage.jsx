@@ -7,20 +7,15 @@ import {AppContext} from '../../Context/Context';
 
 const FolderPage = () => {
 
-  const {fetchSets, existingSets} = useContext(AppContext);
+  const {fetchSets, existingSets, getFolderById} = useContext(AppContext);
   const {id} = useParams();
   const navigate = useNavigate();
 
   const [currentFolder, setCurrentFolder] = useState();
   const [ids, setIds] = useState([]);
-  
- const getFolderById= async(folderId)=>{
-    const folder = await axios.get(`http://localhost:8000/folders/${folderId}`);
-    setCurrentFolder(folder.data)
-  }
 
   useEffect(() => {
-    getFolderById(id);
+    getFolderById(id, setCurrentFolder);
   },[]);
 
   useEffect(() => {

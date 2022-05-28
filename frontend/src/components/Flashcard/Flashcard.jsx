@@ -18,6 +18,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editor from '@nadavkatan/ckeditor5-custom-build';
 import { AppContext } from "../Context/Context";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useLocation } from "react-router-dom";
 
 
 const Flashcard = ({
@@ -32,7 +33,8 @@ const Flashcard = ({
   setName,
   defaultSet, 
   setDefaultSet,
-  validateCard
+  validateCard,
+  initialValueForValid
 }) => {
   const [currentTerm, setCurrentTerm] = useState(term);
   const [currentDefinition, setcurrentDefinition] = useState(definition);
@@ -43,15 +45,17 @@ const Flashcard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [cards, setCards] = useState([]);
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(initialValueForValid);
 
   const {addOrUpdateFolder,addNewSet, currentUser, removeCardFromSet,updateSet, checkIfCardsLeft, editCard, fetchCards, addNewCard} = useContext(AppContext);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const BASE_URL= process.env.REACT_APP_BASE_URL;
+  const location =useLocation();
 
   const handleUpdate = async() => {
     //Get all the sets, and then check if the current set exists in the database
-    let sets = await axios.post('http://localhost:8000/set/all', {username: currentUser});
+    let sets = await axios.post(`${BASE_URL}/set/all`, {username: currentUser});
     console.log(sets);
     let existing = sets.data.filter(set=> set.set_name === setName && set.inFolder === currentFolder);
     console.log(existing)
@@ -82,6 +86,7 @@ const Flashcard = ({
 
     }else{
       console.log("set does not exist in db");
+      console.log(card)
       //check if folder exists
       if(validateCard(card, currentFolder)){
         console.log("valid")
@@ -102,7 +107,7 @@ const Flashcard = ({
 
   // handle delete card request
   const handleDelete = async() => {
-   axios.delete('http://localhost:8000/cards', {
+   axios.delete(`${BASE_URL}/cards`, {
     data: {
       id: cards[index]._id
     }
@@ -141,6 +146,7 @@ const Flashcard = ({
 
   useEffect(() => {
     fetchCards(setName, setCards);
+    console.log(location);
   },[])
 
   useEffect(() => {

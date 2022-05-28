@@ -27,12 +27,12 @@ const CreatePage = () => {
   });
 
   const validateCard = (card, currentFolder)=>{
-    if(card.SetName && currentFolder){
+    if(card.set && currentFolder){
     console.log("successful validation")
     console.log("set" , card.setName, "currentFolder", currentFolder)
     return true
     }
-    if(!card.setName){
+    if(!card.set){
       toast.error("Card must be assigned to set")
       return false
     }
@@ -97,14 +97,6 @@ const CreatePage = () => {
     })
   };
 
-  useEffect(() => {
-    if(!defaultSet.cards.length){
-      // axios.delete('http://localhost:8000/set', {setId: defaultSet.setId});
-      // deleteSet(defaultSet.setId);
-      // removeSetFromFolder(defaultSet.inFolder, defaultSet.setName);
-    }
-  },[defaultSet]);
-
   return (
     <>
       <Typography variant="h2" style={{ margin: "0.5em 0 0.5em 0.3em" }}>
@@ -148,6 +140,7 @@ const CreatePage = () => {
               cardId={card.id}
               key={card.id}
               validateCard={validateCard}
+              initialValueForValid={false}
             />
           </Grid>)
           })
