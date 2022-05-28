@@ -23,6 +23,7 @@
 .heading-wrapper .heading-container .set-page-heading {
   color: #325288;
   font-size: 5em !important;
+  margin-top: 0;
 }
 
 .heading-wrapper .heading-container .edit-icon {

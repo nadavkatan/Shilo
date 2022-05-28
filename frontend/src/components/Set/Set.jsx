@@ -17,6 +17,12 @@ const Set = ({ set }) => {
     <Carousel
       autoPlay={false}
       className="carousel"
+      navButtonsAlwaysVisible
+      navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
+        style: {
+            backgroundColor: 'cornflowerblue',
+        }
+    }}
       next={(next, active) => setFlipped(false)}
       prev={(prev, active) => setFlipped(false)}
     >
@@ -33,7 +39,7 @@ const Set = ({ set }) => {
                       width: "100%",
                     }}
                   >
-                    <div style={{ width: "50%" }}><Typography variant="h6">{parse(card.definition)}</Typography></div>
+                    <div style={{ width: "50%" }}><Typography variant="h5">{parse(card.definition)}</Typography></div>
                     <div style={{ width: "50%" }}>
                       <img
                       loading="lazy"
@@ -48,12 +54,12 @@ const Set = ({ set }) => {
                     </div>
                   </div>
                 ) : (
-                  <div><Typography variant="h6">{parse(card.definition)}</Typography></div>
+                  <div><Typography variant="h5">{parse(card.definition)}</Typography></div>
                 )}
               </div>
             ) : (
               <div className="card-side">
-                <div><Typography variant="h6">{parse(card.term)}</Typography></div>
+                <div><Typography variant="h5">{parse(card.term)}</Typography></div>
               </div>
             )}
             <Button className="CheckButton" onClick={flippCard}>

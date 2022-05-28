@@ -16,6 +16,7 @@ const SetPage = () => {
   const [setName, setSetName] = useState("");
 
   useEffect(() => {
+    console.log(id)
     getSet(id, setSetName);
   }, []);
 
@@ -32,7 +33,7 @@ const SetPage = () => {
           <Button
             variant="contained"
             color="primary"
-            style={{ margin: "1em" }}
+            style={{ margin: "1em 1em 0 1em" }}
             onClick={() => navigate(-1)}
           >
             Back
