@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Header from "./components/Header/Header";
 import FolderPage from "./components/pages/FolderPage/FolderPage";
@@ -22,6 +22,8 @@ function App() {
     },
   });
 
+  const location = useLocation();
+
   return (
     <Context>
       <ThemeProvider theme={theme}>
@@ -41,7 +43,7 @@ function App() {
             </ProtectedRoute> } />
             <Route path="/:id/edit" element={<EditPage />} />
             <Route path="/folder/:id" element={<FolderPage />} />
-            <Route path="/:id" element={<SetPage />} />
+            <Route path="/:id" element={<SetPage key={location.pathname} />}/>
 
 
           </Routes>
