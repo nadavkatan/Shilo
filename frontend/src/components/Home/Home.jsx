@@ -4,6 +4,7 @@ import "./Home.css";
 import { AppContext } from "../Context/Context";
 import ItemsDisplay from '../itemsDisplay/ItemsDisplay';
 import Spinner from '../Spinner/Spinner';
+import { Typography } from "@mui/material";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,11 @@ const Home = () => {
   loading ? <Spinner />
         : (
         <>
-         { existingSets.length > 0 && <ItemsDisplay items={existingSets} itemSort={"set"} title={"Sets"} />}
+         { existingSets.length > 0 ? <ItemsDisplay items={existingSets} itemSort={"set"} title={"Sets"} /> :       <>
+      <Typography mt={6} sx={{ fontWeight: 500, textAlign: "center" }} className="home-headings" variant="h3">
+        Start creating card sets and boost your learning experience!
+      </Typography>       
+      </>}
          { existingFolders.length > 0 && <ItemsDisplay items={existingFolders} itemSort={"folders"} title={"Folders"} />}
     </>
           )
