@@ -12,13 +12,17 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport')
 const cors = require('cors');
 
+
 const app = express();
 const PORT=process.env.PORT || 8000;
+
+
 mongoConnect();
 
 
 const sessionStore = MongoStore.create({
     client: mongoose.connection.getClient(),
+    mongoUrl: process.env.MONGOOSE_URI,
     collectionName: "sessions"
 })
 
@@ -35,6 +39,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
+    // store: MongoStore.create({ mongoUrl: uri, client: client}),
     cookie:{
         maxAge: 1000 * 60 * 60,
     }
@@ -52,10 +57,13 @@ app.use("/folders", foldersRouter);
 
 
 mongoose.connection.once("open", ()=>{
-    // mongoose.connection.db.collection('sessions').deleteMany({})
     console.log("Connected to database");
     app.listen(PORT, ()=>{
         console.log('Server is running on port '+ PORT);
     });
 })
+// app.listen(PORT, ()=>{
+//     console.log('Server is running on port '+ PORT);
+//     // console.log(mongoose.connection)
+// });
 

@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./SetPage.css";
 import { AppContext } from "../../Context/Context";
 import { useContext } from "react";
+import Spinner from '../../Spinner/Spinner';
 
 const SetPage = () => {
   const { id } = useParams();
@@ -14,17 +15,22 @@ const SetPage = () => {
 
   const [cardsinSet, setCardsInSet] = useState([]);
   const [setName, setSetName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log(id)
+    setLoading(true)
     getSet(id, setSetName);
   }, []);
 
   useEffect(() => {
     if (setName) {
       fetchCards(setName, setCardsInSet);
+      setLoading(false);
     }
   }, [setName]);
+
+  if(loading) return <Spinner/>
 
   return (
     <>

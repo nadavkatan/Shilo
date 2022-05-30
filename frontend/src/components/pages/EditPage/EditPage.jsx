@@ -10,6 +10,7 @@ import {
 import Flashcard from "../../Flashcard/Flashcard";
 import axios from "axios";
 import {AppContext} from '../../Context/Context';
+import Spinner from "../../Spinner/Spinner";
 
 const EditPage = () => {
 
@@ -18,6 +19,7 @@ const EditPage = () => {
   const{ fetchCards} = useContext(AppContext);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   
+  const [loading, setLoading] = useState(false);
   const [setName, setSetName] = useState("");
   const [currentSet, setCurrentSet] = useState();
   const [cardsInset, setCardsInSet] = useState([])
@@ -78,6 +80,7 @@ const EditPage = () => {
   }
 
   useEffect(()=>{
+    setLoading(true)
     getSet(id);
   },[]);
 
@@ -101,12 +104,11 @@ const EditPage = () => {
           inFolder: currentSet.inFolder
         }
       })
+      setLoading(false)
     }
   },[setName])
 
-  useEffect(()=>{
-    console.log(defaultSet)
-  },[defaultSet])
+  if(loading)return <Spinner/>
 
   return (
     <>
