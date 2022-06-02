@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const checkAuth = async()=>{
-    const response = await axios.get('http://localhost:8000/auth/check-auth', {withCredentials: true});
+    const response = await axios.get('https://shilo-app.herokuapp.com/auth/check-auth', {withCredentials: true});
     console.log(response)
     const isAuth = response.data;
     return isAuth;
@@ -10,7 +10,7 @@ export const checkAuth = async()=>{
 export const login = async(credentials)=>{
     const response = await axios({
         method: 'post',
-        url: 'http://localhost:8000/auth/login', 
+        url: 'https://shilo-app.herokuapp.com/auth/login', 
         data: credentials,
         headers:{
             "Content-Type": "application/json"
@@ -29,13 +29,13 @@ export const login = async(credentials)=>{
 
 export const logout = async()=>{
     // const response = await axios.delete('http://localhost:8000/auth/logout')
-    const response = await axios.get('http://localhost:8000/auth/logout', {withCredentials: true})
+    const response = await axios.get('https://shilo-app.herokuapp.com/auth/logout', {withCredentials: true})
     return response.data;
 }
 
 export const register = async(userData, cb)=>{
     try{
-        const newUser = await axios.post('http://localhost:8000/auth/register', userData)
+        const newUser = await axios.post('https://shilo-app.herokuapp.com/auth/register', userData)
         if(newUser.data === "User already exists"){
            return cb(newUser.data);
         }else{
