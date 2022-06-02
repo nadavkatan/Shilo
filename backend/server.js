@@ -55,6 +55,12 @@ app.use("/create", createRouter);
 app.use("/cards", cardsRouter);
 app.use("/folders", foldersRouter);
 
+if(process.env.NODE_ENV === 'production'){
+    const path = require('path');
+    app.get('*', (req, res)=>{
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'));
+    })
+}
 
 mongoose.connection.once("open", ()=>{
     console.log("Connected to database");
