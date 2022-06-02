@@ -55,14 +55,21 @@ app.use("/create", createRouter);
 app.use("/cards", cardsRouter);
 app.use("/folders", foldersRouter);
 
-if(process.env.NODE_ENV === 'production'){
-    const path = require('path');
-    const root = express.static(path.resolve(__dirname, '..', 'frontend', 'build'));
-    app.use(root);
-    app.get('*', (req, res)=>{
-        res.sendFile('index.html', {root});
-    })
-}
+// if(process.env.NODE_ENV === 'production'){
+//     const path = require('path');
+//     const root = express.static(path.resolve(__dirname, '..', 'frontend', 'build'));
+//     app.use(root);
+//     app.get('*', (req, res)=>{
+//         res.sendFile('index.html', {root});
+//     })
+// }
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "build")));
+    app.get("*", function(req, res) {
+      res.sendFile(path.join(__dirname, "build", "index.html"));
+    });
+  }
 
 mongoose.connection.once("open", ()=>{
     console.log("Connected to database");
