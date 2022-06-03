@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useMediaQuery } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import React, { useEffect, useState } from "react";
 import "./Set.css";
@@ -13,10 +13,13 @@ const Set = ({ set }) => {
     flipped ? setFlipped(false) : setFlipped(true);
   };
 
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+
   return (
     <Carousel
       autoPlay={false}
-      className="carousel"
+      className={isSmallScreen ? "sm-screen-carousel" : "carousel"}
       navButtonsAlwaysVisible
       navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
         style: {

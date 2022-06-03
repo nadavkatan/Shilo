@@ -11,10 +11,6 @@
 }
 
 .carousel{
-    // min-height: 50em;
-    // height: 20em;
-    // width: 400px;
-    // height: 700px;
     height: 451px!important;
     display: flex;
     justify-content:center;
@@ -22,6 +18,16 @@
     align-items: center;
     margin: 0 auto;
     width: 50%!important;
+}
+
+.sm-screen-carousel{
+    height: 451px!important;
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 95%!important;
 }
 
 .css-1f8sh1y{
