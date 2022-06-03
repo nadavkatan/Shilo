@@ -30,7 +30,7 @@ const Flashcard = ({
   setName,
   defaultSet,
   setDefaultSet,
-  validateCard,
+  // validateCard,
   initialValueForValid,
   page,
 }) => {
@@ -55,6 +55,7 @@ const Flashcard = ({
     editCard,
     fetchCards,
     addNewCard,
+    validateCard
   } = useContext(AppContext);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

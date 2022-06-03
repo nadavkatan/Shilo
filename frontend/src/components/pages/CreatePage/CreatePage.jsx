@@ -26,22 +26,6 @@ const CreatePage = () => {
     }],
   });
 
-  const validateCard = (card, currentFolder)=>{
-    if(card.set && currentFolder){
-    console.log("successful validation")
-    console.log("set" , card.setName, "currentFolder", currentFolder)
-    return true
-    }
-    if(!card.set){
-      toast.error("Card must be assigned to set")
-      return false
-    }
-    if(!currentFolder){
-     toast.error("Card must be assigned to folder")
-     return false
-    }
-  }
-
   // controll the folder and set names input values
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,7 +124,6 @@ const CreatePage = () => {
               setName={defaultSet.setName}
               cardId={card.id}
               key={card.id}
-              validateCard={validateCard}
               initialValueForValid={false}
               page="create"
             />

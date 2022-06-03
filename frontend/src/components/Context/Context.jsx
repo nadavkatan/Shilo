@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import {useLocation, useNavigate} from 'react-router-dom'
+import { toast } from "react-toastify";
 import {checkAuth, login, logout, register} from './utils/auth';
 
 export const AppContext = createContext();
@@ -37,6 +38,21 @@ const Context = ({children}) => {
           editCard: async(cardId, currentTerm, currentDefinition)=>{
           const updatedCard = await axios.put(`${BASE_URL}/cards`,{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
           console.log(updatedCard);
+        },
+         validateCard: (card, currentFolder)=>{
+          if(card.set && currentFolder){
+          console.log("successful validation")
+          console.log("set" , card.setName, "currentFolder", currentFolder)
+          return true
+          }
+          if(!card.set){
+            toast.error("Card must be assigned to set")
+            return false
+          }
+          if(!currentFolder){
+           toast.error("Card must be assigned to folder")
+           return false
+          }
         },
          updateCardInDefaultSet: (cardId, term, definition, defaultSet, setDefaultSet)=>{
             setDefaultSet((prev) => {
