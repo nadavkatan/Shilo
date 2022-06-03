@@ -6,7 +6,7 @@ import './TextArea.css';
 
 const TextArea = ({currentVal, setCurrentVal, setDoneEditing, label}) => {
   return (
-    <Grid className="textarea" item xs={12} md={5}>
+    <Grid className="textarea-editor" item xs={12} md={5}>
     <CKEditor
           editor={ Editor }
           data={currentVal}
