@@ -1,11 +1,11 @@
 .create-page-heading {
-  font-size: 3em;
-  margin: 0.5em 0 0.5em 0.3em;
+  font-size: 3em !important;
+  margin: 0.5em 0 0.5em 0.3em !important;
 }
 
 .sm-screen-create-page-heading {
-  font-size: 2em;
-  margin: 0.5em 0 1em 0.3em;
+  font-size: 2em !important;
+  margin: 0.5em 0 1em 0.3em !important;
 }
 
 .start-learning-container {
