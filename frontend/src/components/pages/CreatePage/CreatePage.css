@@ -7,3 +7,16 @@
   font-size: 2em;
   margin: 0.5em 0 1em 0.3em;
 }
+
+.start-learning-container {
+  text-align: right;
+}
+
+.start-learning-container .start-learning-btn {
+  margin: 0 1em 1em 0;
+}
+
+.start-learning-container .start-learning-btn .start-learning-link {
+  text-decoration: none;
+  color: white;
+}

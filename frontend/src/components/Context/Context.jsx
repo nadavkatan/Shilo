@@ -73,7 +73,10 @@ const Context = ({children}) => {
           },
           addNewSet: async(card, currentFolder, setId)=>{
             const newSet= await axios.post(`${BASE_URL}/set`, {set_name:card.set, inFolder: currentFolder, setId:setId, user: currentUser, cards:[card.id]});
-            console.log(newSet);
+            console.log("context, new set",newSet);
+            const set_id = newSet.data.set._id;
+            console.log(set_id)
+            return set_id
           },
            fetchSets: async()=>{
             await axios.post(`${BASE_URL}/set/all`, {username: currentUser})

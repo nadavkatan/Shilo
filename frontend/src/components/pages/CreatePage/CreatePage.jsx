@@ -1,15 +1,17 @@
-import { Typography, Input, Grid, Fab, useMediaQuery } from "@mui/material";
+import { Typography, Input, Grid, Fab, useMediaQuery, Button } from "@mui/material";
 import React, { useState, useEffect, useContext } from "react";
 import Flashcard from "../../Flashcard/Flashcard";
 import AddIcon from "@mui/icons-material/Add";
 import {AppContext} from '../../Context/Context'
 import { ToastContainer, toast } from 'react-toastify';
 import './CreatePage.css';
+import { Link } from "react-router-dom";
 
 const CreatePage = () => {
 
   const {deleteSet, removeSetFromFolder} = useContext(AppContext);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const [currentSetId, setCurrentSetId] = useState("");
 
 
   let newCard;
@@ -88,6 +90,16 @@ const CreatePage = () => {
         Create a new set
       </Typography>
       <ToastContainer />
+    {  currentSetId &&  
+    <div className="start-learning-container">
+      <Button className="start-learning-btn"variant="contained" color="primary">
+      <Link className="start-learning-link" to={`/${currentSetId}`}>
+      Start learning!
+      </Link>
+      </Button>
+      </div>  
+      }
+      
       <Grid container spacing={2} style={{ marginLeft: "0.5em", width:'90%' }}>
         <Grid item md={2} >
           <Input
@@ -124,6 +136,7 @@ const CreatePage = () => {
               setName={defaultSet.setName}
               cardId={card.id}
               key={card.id}
+              setCurrentSetId={setCurrentSetId}
               initialValueForValid={false}
               page="create"
             />

@@ -32,6 +32,7 @@ const Flashcard = ({
   setDefaultSet,
   // validateCard,
   initialValueForValid,
+  setCurrentSetId,
   page,
 }) => {
   const [currentTerm, setCurrentTerm] = useState(term);
@@ -116,7 +117,14 @@ const Flashcard = ({
         setValid(true);
         addOrUpdateFolder(currentFolder, setName);
         addNewCard(card);
-        addNewSet(card, currentFolder, setId);
+
+        if(page === "create"){
+          const set_id = await addNewSet(card, currentFolder, setId);
+          console.log("flashcard", set_id);
+          setCurrentSetId(set_id);
+        }else{
+          addNewSet(card, currentFolder, setId);
+        }
         updateCardInDefaultSet(cardId, currentTerm, currentDefinition);
         fetchCards(setName, setCards);
       } else {
