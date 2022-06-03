@@ -1,5 +1,6 @@
 .edit-input{
-    padding: 2em;
+    // padding: 2em;
+    // width: 100%;
 }
 
 .text-area{
@@ -22,3 +23,53 @@
         }
 }
 
+.btns-container{
+    // display: flex;
+    // flex-direction: column!important;
+    // justify-content: space-around;
+    // height: 100%;
+    display: flex;
+    flex-direction: column!important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4em 0.4em 0.4em 0;
+    gap: 0.4em;
+}
+
+.sm-screen-btns-container{
+    display: flex;
+    gap: 0.4em;
+    padding: 0.2em
+}
+
+.textareas-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.sm-screen-textareas-container{
+    display: flex;
+    flex-direction: column!important;
+    // gap: 0.4em;
+    padding: 1.2em
+}
+
+
+.card-nr{
+    width: 96%;
+    margin: 0 auto!important;
+    padding: 0.5em;
+    font-weight: bold!important;
+    color: grey;
+}
+
+.flashCardPaper{
+    height: 12em;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.btn{
+    width: 100%;
+}

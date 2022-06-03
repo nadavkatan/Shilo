@@ -97,13 +97,28 @@ const CreatePage = () => {
     })
   };
 
+  // const editCardInDefaultSet = (cardId, property, value)=>{
+  //   let card = defaultSet.cards.find(card=> card.id === cardId);
+  //   card.property = value;
+  //   const filteredCards = defaultSet.cards.filter(card => card.id !== cardId);
+  //   const updatedCards = [...filteredCards, card];
+  //   setDefaultSet({
+  //     ...defaultSet,
+  //     updatedCards
+  //   })
+  // }
+
+  useEffect(() =>
+    console.log(defaultSet)
+  , [defaultSet])
+
   return (
     <>
       <Typography variant="h2" style={{ margin: "0.5em 0 0.5em 0.3em" }}>
         Create a new set
       </Typography>
       <ToastContainer />
-      <Grid container spacing={2} style={{ marginLeft: "0.5em" }}>
+      <Grid container spacing={2} style={{ marginLeft: "0.5em", width:'90%' }}>
         <Grid item md={2} >
           <Input
             placeholder="Enter set title"
@@ -141,6 +156,7 @@ const CreatePage = () => {
               key={card.id}
               validateCard={validateCard}
               initialValueForValid={false}
+              page="create"
             />
           </Grid>)
           })

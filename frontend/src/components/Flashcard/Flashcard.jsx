@@ -1,4 +1,5 @@
 import {
+  Button,
   CircularProgress,
   Divider,
   Fab,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import IconButton from '@mui/material/IconButton';
 import DoneIcon from "@mui/icons-material/Done";
 import ImageIcon from "@mui/icons-material/Image";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -19,6 +21,7 @@ import Editor from '@nadavkatan/ckeditor5-custom-build';
 import { AppContext } from "../Context/Context";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useLocation } from "react-router-dom";
+import TextArea from '../TextArea/TextArea';
 
 
 const Flashcard = ({
@@ -34,7 +37,8 @@ const Flashcard = ({
   defaultSet, 
   setDefaultSet,
   validateCard,
-  initialValueForValid
+  initialValueForValid,
+  page
 }) => {
   const [currentTerm, setCurrentTerm] = useState(term);
   const [currentDefinition, setcurrentDefinition] = useState(definition);
@@ -51,7 +55,6 @@ const Flashcard = ({
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const BASE_URL= process.env.REACT_APP_BASE_URL;
-  const location =useLocation();
 
   const handleUpdate = async() => {
     //Get all the sets, and then check if the current set exists in the database
@@ -134,7 +137,6 @@ const Flashcard = ({
         const API_KEY = process.env.REACT_APP_UNSPLAH_API_KEY;
         const API_URL = `https://api.unsplash.com/search/photos?query=${searchQuery}&per_page=5&client_id=${API_KEY}`;
        const images = await axios.get(API_URL);
-       console.log(images)
        setSuggestedImgs([...images.data.results]);
       setIsLoading(false)
       }catch(err){
@@ -144,159 +146,30 @@ const Flashcard = ({
     }
   };
 
-  useEffect(() => {
-    fetchCards(setName, setCards);
-    console.log(location);
-  },[])
-
-  useEffect(() => {
-    console.log(suggestedImgs);
-  }, [suggestedImgs]);
-
-  useEffect(() => {
-    console.log(cards);
-  }, [cards]);
-
-
-  useEffect(() => {
-    console.log(curentImgSrc);
-  }, [curentImgSrc]);
-
-
   return (
     <Grid item xs={12} style={{ margin: "1em" }}>
-      <Paper
-        style={{
-          height: "12em",
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: doneEditing && valid ? "lightgrey" : "white",
-        }}
-        elevation={3}
-      >
+      <Paper className="flashCardPaper" style={{backgroundColor: doneEditing && valid ? "lightgrey" : "white"}} elevation={3}>
         <Grid container>
         {
           !isSmallScreen &&         
            <Grid item xs={12}>
-            <Typography
-              variant="subtitle1"
-              style={{
-                width: "96%",
-                margin: "0 auto",
-                padding: "0.5em",
-                fontWeight: "bold",
-                color: "grey",
-              }}
-            >
-              {index + 1}
-            </Typography>
+            <Typography variant="subtitle1" className="card-nr">{index + 1}</Typography>
             <Divider style={{ width: "96%", margin: "0 auto" }} />
           </Grid>
         }
-
           <Grid item xs={12}>
             <Grid container>
-              <Grid className="edit-input" item xs={5}>
-              <CKEditor
-                    editor={ Editor }
-                    data={currentTerm}
-                    onReady={ editor => {
-                        // console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        // console.log( { event, editor, data } );
-                        setCurrentTerm(data);
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        // console.log( 'Focus.', editor );
-                        setDoneEditing(false);
-                    } }
-                />
-                <InputLabel
-                  style={{ borderTop: "1px solid lightgrey" }}
-                  htmlFor={term}
-                >
-                  Term
-                </InputLabel>
-              </Grid>
-              <Grid className="edit-input" item xs={5}>
-              <CKEditor
-                    editor={ Editor }
-                    data={currentDefinition}
-                    onReady={ editor => {
-                        // console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        // console.log( { event, editor, data } );
-                        setcurrentDefinition(data);
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        // console.log( 'Focus.', editor );
-                        setDoneEditing(false);
-                    } }
-                />
-                <InputLabel
-                  style={{ borderTop: "1px solid lightgrey" }}
-                  htmlFor={definition}
-                >
-                  Definition
-                </InputLabel>
-              </Grid>
-              <Grid
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                item
-                xs={1}
-              >
-                <Grid container spacing={5}>
-                  <Grid item xs={12} sm={6}>
-                    <Fab
-                      style={{ margin: "1em 0" }}
-                      color="error"
-                      size="small"
-                      aria-label="edit"
-                    >
-                      <DeleteForeverIcon onClick={handleDelete} />
-                    </Fab>
-                    <Fab color="primary" size="small" aria-label="edit" >
-                      <DoneIcon onClick={handleUpdate} />
-                    </Fab>
-                    {
-                      isSmallScreen &&                  
-                          <Fab color="success" size="small" style={{ margin: "1em 0" }}>
-                       <ImageIcon className="img-icon" onClick={() => {
-                        fetchImages(currentTerm)
-                        }}
-                        disabled={isLoading}
-                        />
-                    </Fab>
-
-                    }
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                  {
-                    isSmallScreen ? null
-
-                    :
-                    <div
-                      className="img-icon-container"
-                      onClick={() => {
-                        fetchImages(currentTerm)
-                        }}
-                        disabled={isLoading}
-                    >
-                      <ImageIcon className="img-icon" />
-                      <p style={{ fontSize: "0.8em" }}>IMAGE</p>
-                    </div>
-                  }
-                  </Grid>
-                </Grid>
+            <Grid item xs={12} md={10} className={isSmallScreen ? "sm-screen-textareas-container" : "textareas-container"}>
+            <TextArea currentVal={currentTerm} setCurrentVal={setCurrentTerm} setDoneEditing={setDoneEditing} label="Term"/>
+            <TextArea currentVal={currentDefinition} setCurrentVal={setcurrentDefinition} setDoneEditing={setDoneEditing} label="Definition"/>
+            </Grid>
+              <Grid item xs={12} md={2} className={ isSmallScreen ? 'sm-screen-btns-container' : 'btns-container'}>
+              <Button startIcon={<DoneIcon/>} variant="contained" color="primary" className="btn" onClick={handleUpdate}>{page=== "create"? "Add to set": "Save edit"}</Button>
+                    {/* {
+                      page === "create" &&  <Button startIcon={<DoneIcon/>} variant="contained" color="primary" className="btn" onClick={handleUpdate}>Add to set</Button>
+                    } */}
+                    <Button startIcon={<ImageIcon/>} variant="contained" color="success" className="btn" disabled={isLoading} onClick={() => {fetchImages(currentTerm)}}>Add image</Button>
+                    <Button startIcon={<DeleteForeverIcon/>} variant="contained" className="btn" color="error" onClick={handleDelete}>Delete card</Button>
               </Grid>
             </Grid>
           </Grid>
