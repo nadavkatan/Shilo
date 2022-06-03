@@ -16,6 +16,7 @@ import ImagesBox from "../ImagesBox/ImagesBox";
 import { AppContext } from "../Context/Context";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import TextArea from "../TextArea/TextArea";
+import { useEffect } from "react";
 
 const Flashcard = ({
   term,
@@ -122,7 +123,7 @@ const Flashcard = ({
 
   // handle delete card request
   const handleDelete = async () => {
-    axios.delete(`${BASE_URL}/cards`, {
+    await axios.delete(`${BASE_URL}/cards`, {
       data: {
         id: cards[index]._id,
       },
@@ -157,6 +158,16 @@ const Flashcard = ({
       }
     }
   };
+
+  useEffect(() => {
+    console.log(defaultSet)
+    console.log('fetching cards')
+    fetchCards(setName, setCards);
+  },[])
+
+  useEffect(()=>{
+    console.log(cards)
+  },[cards])
 
   return (
     <Grid item xs={12} style={{ margin: "1em" }}>

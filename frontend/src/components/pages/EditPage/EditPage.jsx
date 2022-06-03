@@ -16,7 +16,7 @@ const EditPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const{ fetchCards} = useContext(AppContext);
+  const{ fetchCards, currentUser} = useContext(AppContext);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   
   const [loading, setLoading] = useState(false);
@@ -108,6 +108,7 @@ const EditPage = () => {
     }
   },[setName])
 
+
   if(loading)return <Spinner/>
 
   return (
@@ -136,6 +137,7 @@ const EditPage = () => {
               definition={card.definition}
               currentFolder={defaultSet.inFolder}
               setName={defaultSet.setName}
+              defaultSet={defaultSet}
               cardId={card.id}
               initialValueForValid={true}
             />
