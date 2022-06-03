@@ -38,6 +38,40 @@
   outline: none;
 }
 
+.invitation-wrapper {
+  height: 85vh;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.invitation-wrapper .invitation-container {
+  margin-top: 4em;
+  width: 85%;
+  padding: 2em;
+  text-align: center;
+}
+
+.invitation-wrapper .invitation-container .invitation {
+  font-size: 2em;
+}
+
+.invitation-wrapper .invitation-container .invitation .invitation-link {
+  text-decoration: none;
+  color: black;
+}
+
 .folders {
   margin: 3em;
 }

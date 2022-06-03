@@ -1,16 +1,16 @@
-import { Typography, Input, Grid, Fab } from "@mui/material";
+import { Typography, Input, Grid, Fab, useMediaQuery } from "@mui/material";
 import React, { useState, useEffect, useContext } from "react";
 import Flashcard from "../../Flashcard/Flashcard";
 import AddIcon from "@mui/icons-material/Add";
 import {AppContext} from '../../Context/Context'
 import { ToastContainer, toast } from 'react-toastify';
-
-
-import axios from 'axios';
+import './CreatePage.css';
 
 const CreatePage = () => {
 
   const {deleteSet, removeSetFromFolder} = useContext(AppContext);
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
 
   let newCard;
 
@@ -97,24 +97,10 @@ const CreatePage = () => {
     })
   };
 
-  // const editCardInDefaultSet = (cardId, property, value)=>{
-  //   let card = defaultSet.cards.find(card=> card.id === cardId);
-  //   card.property = value;
-  //   const filteredCards = defaultSet.cards.filter(card => card.id !== cardId);
-  //   const updatedCards = [...filteredCards, card];
-  //   setDefaultSet({
-  //     ...defaultSet,
-  //     updatedCards
-  //   })
-  // }
-
-  useEffect(() =>
-    console.log(defaultSet)
-  , [defaultSet])
 
   return (
     <>
-      <Typography variant="h2" style={{ margin: "0.5em 0 0.5em 0.3em" }}>
+      <Typography variant="h2" className={isSmallScreen? "sm-screen-create-page-heading": "create-page-heading"}>
         Create a new set
       </Typography>
       <ToastContainer />

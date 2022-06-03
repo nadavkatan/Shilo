@@ -25,6 +25,28 @@
     }
 }
 
+.invitation-wrapper{
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    .invitation-container{
+        margin-top: 4em;
+        width: 85%;
+        padding: 2em;
+        text-align: center;
+        .invitation{
+            font-size: 2em;
+            .invitation-link{
+                text-decoration: none;
+                color: black
+            }
+        }
+    }
+}
+
 
 .folders{
     margin: 3em;

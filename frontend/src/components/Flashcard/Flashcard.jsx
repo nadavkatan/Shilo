@@ -86,19 +86,25 @@ const Flashcard = ({
       //Check if the cards exists in the set, if they don't, update create new card in the db and update cards array in the set in the db
       if (!cards.some((card) => card.id === cardId.toString())) {
         console.log("card not in set");
-        addNewCard(card);
-        updateSet(setName, currentFolder, card);
-        updateCardInDefaultSet(
-          cardId,
-          currentTerm,
-          currentDefinition,
-          defaultSet,
-          setDefaultSet
-        );
-        fetchCards(setName, setCards);
+        if(validateCard(card, currentFolder)){
+          setValid(true);
+          addNewCard(card);
+          updateSet(setName, currentFolder, card);
+          updateCardInDefaultSet(
+            cardId,
+            currentTerm,
+            currentDefinition,
+            defaultSet,
+            setDefaultSet
+          );
+          fetchCards(setName, setCards);
+        }else{
+          setValid(false)
+        }
       } else {
         console.log("card already in set");
         editCard(cardId, currentTerm, currentDefinition);
+        setValid(true);
       }
     } else {
       console.log("set does not exist in db");

@@ -26,6 +26,12 @@
   margin-top: 0;
 }
 
+.heading-wrapper .heading-container .sm-screen-set-page-heading {
+  color: #325288;
+  font-size: 3em !important;
+  margin-top: 0;
+}
+
 .heading-wrapper .heading-container .edit-icon {
   margin-left: -1em;
   margin-top: 3em;
