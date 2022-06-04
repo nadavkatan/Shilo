@@ -30,8 +30,8 @@ const Flashcard = ({
   setName,
   defaultSet,
   setDefaultSet,
-  // validateCard,
   initialValueForValid,
+  currentSetId,
   setCurrentSetId,
   page,
 }) => {
@@ -56,7 +56,8 @@ const Flashcard = ({
     editCard,
     fetchCards,
     addNewCard,
-    validateCard
+    validateCard,
+    fetchCardsBySetId
   } = useContext(AppContext);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -75,6 +76,7 @@ const Flashcard = ({
 
     let card = {
       set: setName,
+      setId:"",
       term: currentTerm,
       definition: currentDefinition,
       id: cardId.toString(),
@@ -90,6 +92,7 @@ const Flashcard = ({
         console.log("card not in set");
         if(validateCard(card, currentFolder)){
           setValid(true);
+          card.setId = existing[0]._id;
           addNewCard(card);
           updateSet(setName, currentFolder, card);
           updateCardInDefaultSet(
@@ -99,36 +102,31 @@ const Flashcard = ({
             defaultSet,
             setDefaultSet
           );
-          fetchCards(setName, setCards);
+          fetchCardsBySetId(currentSetId, setCards);
         }else{
           setValid(false)
         }
       } else {
         console.log("card already in set");
-        editCard(cardId, currentTerm, currentDefinition);
+        editCard(cardId, currentTerm, currentDefinition, curentImgSrc);
         setValid(true);
       }
     } else {
       console.log("set does not exist in db");
       console.log(card);
-      //check if folder exists
-      if (validateCard(card, currentFolder)) {
+
+      if(validateCard(card, currentFolder)){
         console.log("valid");
         setValid(true);
-        addOrUpdateFolder(currentFolder, setName);
+        const set_id = await addNewSet(card, currentFolder, setId);
+        console.log("flashcard", set_id);
+        setCurrentSetId(set_id);
+        card.setId = set_id;
         addNewCard(card);
-
-        if(page === "create"){
-          const set_id = await addNewSet(card, currentFolder, setId);
-          console.log("flashcard", set_id);
-          setCurrentSetId(set_id);
-        }else{
-          addNewSet(card, currentFolder, setId);
-        }
-        updateCardInDefaultSet(cardId, currentTerm, currentDefinition);
-        fetchCards(setName, setCards);
-      } else {
-        setValid(false);
+        addOrUpdateFolder(currentFolder, setName);
+        fetchCardsBySetId(currentSetId, setCards);
+      }else{
+        valid(false)
       }
     }
 
@@ -175,14 +173,12 @@ const Flashcard = ({
   };
 
   useEffect(() => {
-    console.log(defaultSet)
-    console.log('fetching cards')
-    fetchCards(setName, setCards);
+    fetchCardsBySetId(currentSetId, setCards);
   },[])
 
   useEffect(()=>{
-    console.log(cards)
-  },[cards])
+    console.log("currentImgSrc: ",curentImgSrc)
+  },[curentImgSrc])
 
   return (
     <Grid item xs={12} style={{ margin: "1em" }}>

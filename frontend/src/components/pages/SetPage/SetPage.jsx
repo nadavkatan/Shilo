@@ -11,7 +11,7 @@ import Spinner from '../../Spinner/Spinner';
 const SetPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { fetchCards, getSet } = useContext(AppContext);
+  const { fetchCards, fetchCardsBySetId, getSet } = useContext(AppContext);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
 
@@ -27,10 +27,15 @@ const SetPage = () => {
 
   useEffect(() => {
     if (setName) {
-      fetchCards(setName, setCardsInSet);
+      // fetchCards(setName, setCardsInSet);
+      fetchCardsBySetId(id, setCardsInSet);
       setLoading(false);
     }
   }, [setName]);
+
+  useEffect(() => {
+    console.log(cardsinSet)
+  },[cardsinSet]);
 
   if(loading) return <Spinner/>
 

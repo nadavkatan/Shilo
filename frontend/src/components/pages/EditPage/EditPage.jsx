@@ -16,11 +16,12 @@ const EditPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const{ fetchCards, currentUser} = useContext(AppContext);
+  const{ fetchCards,fetchCardsBySetId, currentUser} = useContext(AppContext);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   
   const [loading, setLoading] = useState(false);
   const [setName, setSetName] = useState("");
+  const [currentSetId, setCurrentSetId] = useState("");
   const [currentSet, setCurrentSet] = useState();
   const [cardsInset, setCardsInSet] = useState([])
   const [defaultSet, setDefaultSet] = useState({
@@ -34,7 +35,8 @@ const EditPage = () => {
   const getSet = async()=>{
     const set = await axios.get(`${BASE_URL}/set/${id}`);
     console.log(set)
-      setCurrentSet(set.data)
+      setCurrentSet(set.data);
+      setCurrentSetId(set.data._id);
       setSetName(set.data.set_name)
   }
 
@@ -95,7 +97,8 @@ const EditPage = () => {
 
   useEffect(()=>{
     if(setName){
-      fetchCards(setName, setCardsInSet);
+      // fetchCards(setName, setCardsInSet);
+      fetchCardsBySetId(currentSetId, setCardsInSet);
       setDefaultSet((prev)=>{
         return{
           ...prev, 
@@ -130,6 +133,7 @@ const EditPage = () => {
             <Flashcard
               key={card.id}
               setId={defaultSet.setId}
+              currentSetId={currentSetId}
               updateCardInDefaultSet={updateCardInDefaultSet}
               deleteCardFromDefaultSet={deleteCardFromDefaultSet}
               index={index}

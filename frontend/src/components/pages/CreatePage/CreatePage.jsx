@@ -137,6 +137,7 @@ const CreatePage = () => {
               cardId={card.id}
               key={card.id}
               setCurrentSetId={setCurrentSetId}
+              currentSetId={currentSetId}
               initialValueForValid={false}
               page="create"
             />

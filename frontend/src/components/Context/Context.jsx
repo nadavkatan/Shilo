@@ -35,14 +35,19 @@ const Context = ({children}) => {
           let cards = await axios.post(`${BASE_URL}/cards/in-set`, {setName:setName});
           cb(cards.data);
          },
-          editCard: async(cardId, currentTerm, currentDefinition)=>{
-          const updatedCard = await axios.put(`${BASE_URL}/cards`,{id:cardId, update:{term: currentTerm, definition: currentDefinition}})
+         fetchCardsBySetId: async(setId, cb)=>{
+          let cards = await axios.post(`${BASE_URL}/cards/in-set-id`, {setId:setId});
+          console.log(cards);
+          cb(cards.data);
+         },
+          editCard: async(cardId, currentTerm, currentDefinition, currentImgSrc)=>{
+          const updatedCard = await axios.put(`${BASE_URL}/cards`,{id:cardId, update:{term: currentTerm, definition: currentDefinition, defImgSrc: currentImgSrc}})
           console.log(updatedCard);
         },
          validateCard: (card, currentFolder)=>{
           if(card.set && currentFolder){
           console.log("successful validation")
-          console.log("set" , card.setName, "currentFolder", currentFolder)
+          console.log("set" , card.set, "currentFolder", currentFolder)
           return true
           }
           if(!card.set){

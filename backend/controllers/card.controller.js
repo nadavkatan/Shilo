@@ -28,6 +28,16 @@ const getCardsInSet = async(setName)=>{
     }
 }
 
+const getCardsBySetId = async(setId)=>{
+    try{
+        const cards = await Card.find({setId:setId});
+        console.log(cards);
+        return cards
+    }catch(err){
+        console.log(err);
+    }
+}
+
 const findOneCard = async(cardId)=>{
     try{
         const card = await Card.find({id: cardId});
@@ -64,4 +74,4 @@ const deleteCardById = async(id)=>{
     }
 }
 
-module.exports= {addCard, getAllCards, findOneCard, updateCard, deleteCard, getCardsInSet,deleteCardById};
+module.exports= {addCard, getAllCards, findOneCard, updateCard, deleteCard, getCardsInSet,deleteCardById, getCardsBySetId};

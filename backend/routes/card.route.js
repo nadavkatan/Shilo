@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Card = require('../models/card.model');
-const{getAllCards, updateCard, findOneCard, deleteCard, getCardsInSet, deleteCardById} = require('../controllers/card.controller');
+const{getAllCards, updateCard, findOneCard, deleteCard,getCardsBySetId, getCardsInSet, deleteCardById} = require('../controllers/card.controller');
 
 router.get("/", async(req, res) => {
     const cards = await getAllCards();
@@ -13,6 +13,12 @@ router.post("/one", async(req, res) => {
 
 router.post("/in-set", async(req, res) => {
     const cards = await getCardsInSet(req.body.setName);
+    res.status(200).json(cards);
+})
+
+router.post("/in-set-id", async(req, res) => {
+    console.log(req.body.setId)
+    const cards = await getCardsBySetId(req.body.setId);
     res.status(200).json(cards);
 })
 
