@@ -8,7 +8,6 @@ router.post("/register", async(req,res)=>{
      User.findOne({username: req.body.username},async (err, user)=>{
         if(err) throw err;
         if(user) {
-            // console.log("User already exists")
             res.send("User already exists");
         }
         if(!user){
