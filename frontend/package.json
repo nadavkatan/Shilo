@@ -2,7 +2,7 @@
   "name": "quizlet",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://shilo-app.herokuapp.com/",
+  "homepage": "https://shilo.onrender.com/",
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^4.0.0",
     "@emotion/react": "^11.8.2",
